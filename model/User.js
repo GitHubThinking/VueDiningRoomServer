@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-mongoose.set('useCreateIndex',true)
+mongoose.set('useCreateIndex', true)
 var UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -16,9 +16,17 @@ var UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    orders:{
-        type:Array,
-        default:[]
+    avatar: {
+        type: String,
+        default: 'default.jpg'
+    },
+    money: {
+        type: Number,
+        default: 0
+    },
+    orders: {
+        type: Array,
+        default: []
     }
 });
 
@@ -35,16 +43,23 @@ var save = (data) => {
 
 }
 
-var findOne = (username,password)=>{
-    console.log(username)
-    console.log(password)
-    return UserModel.findOne({
-        username,
-        password
+var findOne = (data) => {
+    return UserModel.findOne(data)
+}
+
+// 充值
+var recharge = (username, recharge) => {
+
+    return UserModel.findOneAndUpdate({
+        username
+    },{
+        money:recharge
     })
+
 }
 
 module.exports = {
     save,
-    findOne
+    findOne,
+    recharge
 }

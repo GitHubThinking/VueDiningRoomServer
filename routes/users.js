@@ -9,4 +9,6 @@ router.get('/', function(req, res, next) {
 router.post('/login',usersController.login)
 router.get('/logout',usersController.logout)
 router.post('/register',usersController.register)
+router.get('/getuser',usersController.getuser)
+router.post('/recharge',usersController.recharge)
 module.exports = router;
