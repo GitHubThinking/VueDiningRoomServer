@@ -99,9 +99,9 @@ var recharge = async (req, res, err) => {
         username
     })
     var newmoney = user.money + rechargemoney
-    console.log('newmoney'+newmoney)
+    // console.log('newmoney'+newmoney)
     var result = await UserModel.recharge(user.username, newmoney)
-    console.log('result.money'+result.money)
+    // console.log('result.money'+result.money)
     if (result) {
         req.session.money = newmoney
         res.send({
@@ -119,11 +119,48 @@ var recharge = async (req, res, err) => {
     }
 }
 
+// 消费
+var consume = async (req,res,arr) => {
+    var {
+        username,
+        paymoney
+    } = req.body
+
+    var user = await UserModel.findOne({
+        username
+    })
+    var newmoney = user.money - paymoney
+    if(newmoney < 0){
+        res.send({
+            msg: '对不起，余额不足！',
+            state: -2
+        });
+        return ;
+    }
+
+    var result = await UserModel.recharge(user.username, newmoney)
+    if (result) {
+        req.session.money = newmoney
+        res.send({
+            msg: '消费成功',
+            state: 0,
+            data: {
+                money: newmoney
+            }
+        });
+    } else {
+        res.send({
+            msg: '消费失败',
+            state: -1
+        });
+    }
+}
 
 module.exports = {
     login,
     logout,
     register,
     getuser,
-    recharge
+    recharge,
+    consume
 }
