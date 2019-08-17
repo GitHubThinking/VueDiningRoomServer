@@ -41,6 +41,7 @@ var login = async (req, res, err) => {
         req.session.username = result.username;
         req.session.realname = result.realname;
         req.session.money = result.money
+        req.session.userid = result._id
         res.send({
             msg: 'login success',
             state: 0
@@ -74,7 +75,8 @@ var getuser = async (req, res, err) => {
             data: {
                 username: req.session.username,
                 realname: req.session.realname,
-                money: req.session.money
+                money: req.session.money,
+                userid: req.session.userid
             }
         });
     } else {
